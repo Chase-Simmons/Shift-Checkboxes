@@ -112,12 +112,32 @@
         }
       });
       checkboxes.forEach((checkbox) => {
-        console.log(checkbox);
-        checkbox.addEventListener('click', (e) => {
-          console.log(shiftDown);
-          if (!shiftDown) return;
+        checkbox.addEventListener('click', () => {
+          if (!shiftDown || !checkbox.checked) return;
+          shiftCheck();
         });
       });
+
+      function shiftCheck() {
+        let firstCheck;
+        let prevCheck;
+        let lastCheck;
+        for (let i = 0; i < checkboxes.length; i++) {
+          if (firstCheck === undefined) {
+            if (checkboxes[i].checked) firstCheck = i;
+          } else {
+            if (checkboxes[i].checked) prevCheck = i;
+          }
+          if (i + 1 === checkboxes.length) lastCheck = prevCheck;
+        }
+
+        for (let i = 0; i < checkboxes.length; i++) {
+          if (!lastCheck) return;
+          if (i >= firstCheck && i <= lastCheck) checkboxes[i].checked = true;
+        }
+
+        console.log(firstCheck, prevCheck, lastCheck);
+      }
     </script>
   </body>
 </html>
